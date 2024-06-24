@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-use combinators::map::map;
+use combinators::{bind::bind, map::map};
 type ParseResult<'a, O> = Result<(&'a str, O), &'a str>;
 
 type ParserType<'a, O> = dyn Fn(&'a str) -> ParseResult<'a, O>;
@@ -34,6 +34,17 @@ impl<'a, O> Parser<'a, O> {
     {
         map(self.clone(), map_fn)
     } 
+
+    pub fn bind<F, NewO>(&self, f: F) -> Parser<'a, NewO>
+    where
+        'a: 'static,
+        Self: Clone + 'a,
+        O: 'a,
+        NewO: 'a,
+        F: Fn(O) -> Parser<'a, NewO> + 'a,
+    {
+        bind(self.clone(), f)
+    }
 }
 
 pub mod basic_parsers;

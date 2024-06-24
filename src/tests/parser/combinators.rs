@@ -1,4 +1,4 @@
-use crate::parser::{basic_parsers::char::any_char, combinators::map::map};
+use crate::parser::{basic_parsers::{char::any_char, identifier::identifier, literal::literal}, combinators::{map::map, pair::pair}};
 
 #[test]
 fn map_combinator() {
@@ -37,4 +37,20 @@ fn map_combinator() {
         p.map(f).parse(""),
         Err("")
     );
+}
+
+#[test]
+fn bind_combinator() {
+
+}
+
+#[test]
+fn pair_combinator() {
+    let tag_opener = pair(literal("<"), identifier());
+    assert_eq!(
+        Ok(("/>", ((),"my-first-element".to_string()))),
+        tag_opener.parse("<my-first-element/>")
+    );
+    assert_eq!(Err("ooops"), tag_opener.parse("ooops"));
+    assert_eq!(Err("!oops"), tag_opener.parse("<!oops"));
 }

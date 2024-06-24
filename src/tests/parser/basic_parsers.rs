@@ -1,4 +1,4 @@
-use crate::parser::basic_parsers::{char::{any_char, char}, literal::literal};
+use crate::parser::basic_parsers::{char::{any_char, char}, identifier::identifier, literal::literal};
 
 #[test]
 fn any_char_parser() {
@@ -25,5 +25,23 @@ fn literal_parser() {
     assert_eq!(
         Err("Tchau gente!"),
         p.parse("Tchau gente!")
+    );
+}
+
+#[test]
+fn identifier_parser() {
+    assert_eq!(
+        Ok(("", "i-am-an-identifier".to_string())),
+        identifier().parse("i-am-an-identifier")
+    );
+
+    assert_eq!(
+        Ok((" entirely an identifier", "not".to_string())),
+        identifier().parse("not entirely an identifier")
+    );
+
+    assert_eq!(
+        Err("!not at all an identifier"),
+        identifier().parse("!not at all an identifier")
     );
 }
