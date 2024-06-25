@@ -47,3 +47,4 @@ impl<'a, O> Parser<'a, O> {
 
 pub mod basic_parsers;
 pub mod combinators;
+pub mod operations;
