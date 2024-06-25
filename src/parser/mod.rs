@@ -3,7 +3,7 @@ use std::rc::Rc;
 use combinators::{bind::bind, map::map};
 type ParseResult<'a, O> = Result<(&'a str, O), &'a str>;
 
-type ParserType<'a, O> = dyn Fn(&'a str) -> ParseResult<'a, O>;
+type ParserType<'a, O> = dyn Fn(&'a str) -> ParseResult<'a, O> + 'a;
 
 #[derive(Clone)]
 pub struct Parser<'a, O> {
@@ -13,7 +13,7 @@ pub struct Parser<'a, O> {
 impl<'a, O> Parser<'a, O> {
     pub fn new<P> (parser: P) -> Self
     where 
-        P: Fn(&'a str) -> Result<(&'a str, O), &'a str> + 'static,
+        P: Fn(&'a str) -> Result<(&'a str, O), &'a str> + 'a,
     {
         Self {
             method: Rc::new(parser)
@@ -26,7 +26,6 @@ impl<'a, O> Parser<'a, O> {
 
     pub fn map<F, NewO>(&self, map_fn: F) -> Parser<'a, NewO> 
     where
-        'a: 'static, 
         Self: Clone + Sized + 'a,
         O: 'a,
         NewO: 'a,
@@ -37,7 +36,6 @@ impl<'a, O> Parser<'a, O> {
 
     pub fn bind<F, NewO>(&self, f: F) -> Parser<'a, NewO>
     where
-        'a: 'static,
         Self: Clone + 'a,
         O: 'a,
         NewO: 'a,

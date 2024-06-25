@@ -1,6 +1,6 @@
 use crate::parser::Parser;
 
-pub fn identifier() -> Parser<'static, String> {
+pub fn identifier<'a>() -> Parser<'a, String> {
     Parser::new(
         |input| {
             let mut matched = String::new();

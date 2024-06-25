@@ -1,6 +1,6 @@
 use super::super::Parser;
 
-pub fn any_char() -> Parser<'static, char> {
+pub fn any_char<'a>() -> Parser<'a, char> {
     Parser::new(
         |input| match input.chars().next() {
             Some(c) => Ok((&input[1..],c)),
@@ -9,7 +9,7 @@ pub fn any_char() -> Parser<'static, char> {
     )
 }
 
-pub fn char(expected: char) -> Parser<'static, char> {
+pub fn char<'a>(expected: char) -> Parser<'a, char> {
     Parser::new(
         move |input| match input.chars().next() {
             Some(c) if c == expected => Ok((&input[1..], c)),

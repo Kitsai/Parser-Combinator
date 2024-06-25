@@ -53,4 +53,12 @@ fn pair_combinator() {
     );
     assert_eq!(Err("ooops"), tag_opener.parse("ooops"));
     assert_eq!(Err("!oops"), tag_opener.parse("<!oops"));
+
+    let tag_opener = literal("<") + identifier();
+    assert_eq!(
+        Ok(("/>", ((),"my-first-element".to_string()))),
+        tag_opener.parse("<my-first-element/>")
+    );
+    assert_eq!(Err("ooops"), tag_opener.parse("ooops"));
+    assert_eq!(Err("!oops"), tag_opener.parse("<!oops"));
 }

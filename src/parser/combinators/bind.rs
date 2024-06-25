@@ -2,7 +2,6 @@ use crate::parser::Parser;
 
 pub fn bind<'a, F, A: 'a, B>(parser: Parser<'a, A>, f: F) -> Parser<'a, B>
 where
-    'a: 'static,
     F: Fn(A) -> Parser<'a, B> + 'a,
 {
     Parser::new(
