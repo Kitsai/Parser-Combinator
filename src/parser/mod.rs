@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-use combinators::{bind::bind, map::map};
+use combinators::{bind::bind, map::map, pred::pred};
 type ParseResult<'a, O> = Result<(&'a str, O), &'a str>;
 
 type ParserType<'a, O> = dyn Fn(&'a str) -> ParseResult<'a, O> + 'a;
@@ -42,6 +42,16 @@ impl<'a, O> Parser<'a, O> {
         F: Fn(O) -> Parser<'a, NewO> + 'a,
     {
         bind(self.clone(), f)
+    }
+
+    pub fn pred<F>(&self, pred_fn: F) -> Parser<'a, O>
+    where 
+        'a: 'static,
+        Self: Clone + Sized + 'a,
+        O: 'a,
+        F: Fn(&O) -> bool + 'a,
+    {
+        pred(self.clone(), pred_fn)
     }
 }
 
