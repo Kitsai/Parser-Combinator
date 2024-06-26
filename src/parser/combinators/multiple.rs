@@ -7,8 +7,6 @@ use crate::parser::Parser;
 use super::pair::pair;
 
 pub fn one_or_more<'a, O: 'a + Clone>(parser: Parser<'a, O>) -> Parser<'a, Vec<O>>
-where 
-    'a:'static,
 {
     pair(parser.clone(), zero_or_more(parser)).map( | (head, mut tail) | {
         tail.insert(0, head);
@@ -17,8 +15,6 @@ where
 }
 
 pub fn zero_or_more<'a, O: 'a>(parser: Parser<'a, O>) -> Parser<'a, Vec<O>>
-where 
-    'a: 'static,
 {
     Parser::new(
         move | mut input | {
@@ -35,15 +31,12 @@ where
 }
 
 // fn n_or_more<'a, O>(parser: Parser<'a, O>, n: usize) -> Parser<'a, Vec<O>>
-// where 
-//     'a: 'static,
 // {
     
 // }
 
 fn n_times<'a, O>(parser: Parser<'a, O>, n: usize) -> Parser<'a, Vec<O>>
 where 
-    'a: 'static,
     O: 'a,
 {
     Parser::new(
@@ -77,7 +70,6 @@ where
 
 // pub fn repeat<'a, O, R>(parser: Parser<'a, O>, range: R) -> Parser<'a, Vec<O>>
 // where 
-//     'a: 'static,
 //     R: RangeBounds<usize>,
 // {
 //     Parser::new(

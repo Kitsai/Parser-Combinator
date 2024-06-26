@@ -2,7 +2,6 @@ use crate::parser::Parser;
 
 pub fn either<'a, O: 'a>(parser1: Parser<'a, O>, parser2: Parser<'a, O>) -> Parser<'a, O>
 where 
-    'a: 'static,
 {
     Parser::new(
         move | input | match parser1.parse(input) {

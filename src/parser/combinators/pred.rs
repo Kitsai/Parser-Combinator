@@ -2,7 +2,6 @@ use crate::parser::Parser;
 
 pub fn pred<'a, O:'a, F>(parser: Parser<'a,O>, predicate: F) -> Parser<'a, O>
 where 
-    'a: 'static,
     F: Fn(&O) -> bool + 'a,
 {
     Parser::new(
