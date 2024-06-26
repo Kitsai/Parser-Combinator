@@ -1,4 +1,4 @@
-use crate::parser::{basic_parsers::{char::any_char, identifier::identifier, literal::literal}, combinators::{map::map, pair::pair}};
+use crate::parser::{basic_parsers::{char::{any_char, char}, identifier::identifier, literal::literal}, combinators::{map::map, multiple::repeat, pair::pair}};
 
 #[test]
 fn map_combinator() {
@@ -61,4 +61,17 @@ fn pair_combinator() {
     );
     assert_eq!(Err("ooops"), tag_opener.parse("ooops"));
     assert_eq!(Err("!oops"), tag_opener.parse("<!oops"));
+}
+
+#[test]
+fn multiple_combinator() {
+    assert_eq!(
+        Ok(("", vec!['a','a','a','a','a'])),
+        repeat(char('a'), ..).parse("aaaaa")
+    )
+
+    // assert_eq!(
+    //     Ok(("", vec!['a','a','a','a','a'])),
+    //     repeat(char('a'), 5).parse("aaaaa")
+    // )
 }
