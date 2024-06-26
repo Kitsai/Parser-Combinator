@@ -24,34 +24,34 @@ impl<'a, O> Parser<'a, O> {
         (self.method)(input)
     }
 
-    pub fn map<F, NewO>(&self, map_fn: F) -> Parser<'a, NewO> 
+    pub fn map<F, NewO>(self, map_fn: F) -> Parser<'a, NewO> 
     where
-        Self: Clone + Sized + 'a,
+        Self: Sized + 'a,
         O: 'a,
         NewO: 'a,
         F: Fn(O) -> NewO + 'a,
     {
-        map(self.clone(), map_fn)
+        map(self, map_fn)
     } 
 
-    pub fn bind<F, NewO>(&self, f: F) -> Parser<'a, NewO>
+    pub fn bind<F, NewO>(self, f: F) -> Parser<'a, NewO>
     where
-        Self: Clone + 'a,
+        Self: 'a,
         O: 'a,
         NewO: 'a,
         F: Fn(O) -> Parser<'a, NewO> + 'a,
     {
-        bind(self.clone(), f)
+        bind(self, f)
     }
 
-    pub fn pred<F>(&self, pred_fn: F) -> Parser<'a, O>
+    pub fn pred<F>(self, pred_fn: F) -> Parser<'a, O>
     where 
         'a: 'static,
-        Self: Clone + Sized + 'a,
+        Self: Sized + 'a,
         O: 'a,
         F: Fn(&O) -> bool + 'a,
     {
-        pred(self.clone(), pred_fn)
+        pred(self, pred_fn)
     }
 }
 

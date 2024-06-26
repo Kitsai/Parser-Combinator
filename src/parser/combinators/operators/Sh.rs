@@ -1,3 +1,0 @@
-///left combinator
-
-///right combinator

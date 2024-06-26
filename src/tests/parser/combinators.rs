@@ -23,18 +23,18 @@ fn map_combinator() {
         Err("")
     );
 
-    let p = any_char();
+    let p = any_char().map(f);
 
     assert_eq!(
-        p.map(f).parse("23"),
+        p.parse("23"),
         Ok(("3", 2))
     );
     assert_eq!(
-        p.map(f).parse("Oi!"), 
+        p.parse("Oi!"), 
         Ok(("i!", 0))
     );
     assert_eq!(
-        p.map(f).parse(""),
+        p.parse(""),
         Err("")
     );
 }
@@ -74,4 +74,18 @@ fn multiple_combinator() {
     //     Ok(("", vec!['a','a','a','a','a'])),
     //     repeat(char('a'), 5).parse("aaaaa")
     // )
+}
+
+#[test] 
+fn left_right_combinator() {
+    let test = literal("<") >> identifier() << literal("/>");
+    assert_eq!(
+        Ok(("","TESTE".to_string())),
+        test.parse("<TESTE/>")
+    );
+
+    assert_eq!(
+        Err(">"),
+        test.parse("<TESTE>")
+    )
 }
