@@ -2,6 +2,7 @@ use std::ops::Mul;
 
 use crate::parser::Parser;
 
+/// bind combinator
 impl<'a, O, U ,F> Mul<F> for Parser<'a, O>
 where 
     F: Fn(O) -> Parser<'a, U> + 'a,
