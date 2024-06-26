@@ -46,7 +46,6 @@ impl<'a, O> Parser<'a, O> {
 
     pub fn pred<F>(self, pred_fn: F) -> Parser<'a, O>
     where 
-        'a: 'static,
         Self: Sized + 'a,
         O: 'a,
         F: Fn(&O) -> bool + 'a,
